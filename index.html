@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Better Solution Education｜加拿大教育工作室</title>
+<meta name="description" content="始于2016年的加拿大本地教育工作室。安省K–12、本科及研究生升学规划、院校申请与本地学习支持。Personalized Canadian education planning.">
+<link rel="icon" href="favicon.svg">
+<link rel="stylesheet" href="css/style.css">
+<style>
+/* === Static overrides replacing ChatGPT-specific runtime === */
+:root{--blog-wash:#f7f8fa;--blog-divider:#e8eaec;--blog-table-head:#eef1f4;--blog-ground:#f4f5f7}
+
+/* Modal / lightbox */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);display:none;align-items:center;justify-content:center;z-index:9999;cursor:pointer;padding:20px}
+.modal-overlay.active{display:flex}
+.modal-overlay img{max-width:90vw;max-height:90vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.4)}
+.modal-overlay .modal-close{position:absolute;top:20px;right:28px;color:#fff;font-size:32px;background:none;border:none;cursor:pointer;line-height:1}
+
+/* Language switcher */
+.lang-switcher{position:relative}
+.lang-dropdown{position:absolute;top:100%;right:0;background:#fff;border:1px solid var(--line);border-radius:8px;padding:6px 0;box-shadow:0 8px 24px rgba(0,0,0,.1);display:none;min-width:120px;z-index:100}
+.lang-dropdown.active{display:block}
+.lang-dropdown a{display:block;padding:8px 16px;font-size:13px;color:var(--ink);transition:.2s}
+.lang-dropdown a:hover{background:var(--blog-wash);color:var(--red)}
+.lang-dropdown a.active{font-weight:600;color:var(--red)}
+
+/* Blog filter tabs */
+.filter-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:28px}
+.filter-tabs button{background:transparent;border:1px solid var(--line);border-radius:20px;padding:6px 16px;font-size:13px;color:var(--muted);cursor:pointer;transition:.2s}
+.filter-tabs button:hover{border-color:var(--red);color:var(--red)}
+.filter-tabs button.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Article cards */
+.article-card{text-align:left;background:#fff;border:1px solid var(--line);border-radius:10px;padding:22px 26px;transition:.25s;cursor:pointer;width:100%}
+.article-card:hover{border-color:#c8cdd0;box-shadow:0 4px 18px rgba(0,0,0,.06);transform:translateY(-2px)}
+.article-card .meta{display:flex;gap:12px;font-size:12px;color:var(--muted);margin-bottom:10px}
+.article-card .meta span:first-child{background:var(--blog-wash);color:var(--ink);padding:2px 10px;border-radius:12px;font-size:11px}
+.article-card h3{font-family:var(--serif);font-size:17px;margin-bottom:8px;color:var(--ink)}
+.article-card p{font-size:14px;color:var(--muted);margin-bottom:12px;line-height:1.65}
+.article-card .read-link{font-size:13px;color:var(--red);display:inline-flex;align-items:center;gap:4px}
+.article-card .read-link::after{content:"↗";font-size:11px}
+
+/* Blog grid */
+.blog-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+
+/* Comment system */
+.comment-section{margin-top:40px;padding-top:30px;border-top:1px solid var(--blog-divider)}
+.comment-section h3{font-family:var(--serif);font-size:18px;margin-bottom:18px}
+.comment-form{display:flex;flex-direction:column;gap:12px;margin-bottom:24px}
+.comment-form input,.comment-form textarea{padding:10px 14px;border:1px solid var(--line);border-radius:8px;font-size:14px;background:#fff}
+.comment-form textarea{min-height:80px;resize:vertical}
+.comment-form button{align-self:flex-start;background:var(--ink);color:#fff;border:none;border-radius:6px;padding:10px 24px;font-size:13px;cursor:pointer;transition:.2s}
+.comment-form button:hover{background:var(--navy)}
+.comment-list{display:flex;flex-direction:column;gap:14px}
+.comment-item{background:var(--blog-wash);border-radius:8px;padding:14px 18px}
+.comment-item .c-header{display:flex;justify-content:space-between;margin-bottom:6px;font-size:12px}
+.comment-item .c-author{font-weight:600;color:var(--ink)}
+.comment-item .c-date{color:var(--muted)}
+.comment-item .c-text{font-size:14px;color:var(--ink);line-height:1.6}
+.comment-item .c-actions{margin-top:8px;font-size:12px}
+.comment-item .c-actions button{background:none;border:none;color:var(--muted);cursor:pointer;padding:0;margin-right:12px;transition:.2s}
+.comment-item .c-actions button:hover{color:var(--red)}
+
+/* Like button */
+.like-btn{display:inline-flex;align-items:center;gap:6px;background:transparent;border:1px solid var(--line);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--muted);cursor:pointer;transition:.2s}
+.like-btn:hover{border-color:var(--red);color:var(--red)}
+.like-btn.liked{background:var(--red);border-color:var(--red);color:#fff}
+
+/* Inline QR in contact */
+.inline-qr{display:inline-flex;flex-direction:column;align-items:center;gap:8px;background:transparent;border:none;cursor:pointer;margin-top:16px}
+.inline-qr img{width:120px;height:120px;border-radius:8px;border:1px solid var(--line);object-fit:cover;transition:.25s}
+.inline-qr:hover img{transform:scale(1.04);box-shadow:0 6px 20px rgba(0,0,0,.1)}
+.inline-qr span{font-size:12px;color:var(--muted)}
+
+/* Quick contact floating buttons */
+.quick-contact{position:fixed;right:18px;bottom:80px;display:flex;flex-direction:column;gap:10px;z-index:50}
+.quick-contact button{background:#fff;border:1px solid var(--line);border-radius:50px;padding:10px 18px;font-size:13px;color:var(--ink);box-shadow:0 4px 14px rgba(0,0,0,.08);cursor:pointer;transition:.25s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.quick-contact button:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+/* Admin panel (hidden by default) */
+.admin-panel{display:none;position:fixed;inset:0;background:var(--paper);z-index:10000;overflow:auto}
+.admin-panel.active{display:block}
+.admin-header{background:var(--navy);color:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center}
+.admin-header h2{font-family:var(--serif);font-size:18px;margin:0}
+.admin-header button{background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;padding:6px 14px;border-radius:4px;cursor:pointer}
+.admin-content{padding:24px;max-width:900px;margin:0 auto}
+.admin-table{width:100%;border-collapse:collapse;font-size:13px}
+.admin-table th{background:var(--blog-table-head);padding:10px 12px;text-align:left;font-weight:600;border-bottom:2px solid var(--line)}
+.admin-table td{padding:10px 12px;border-bottom:1px solid var(--blog-divider)}
+.admin-table tr:hover{background:var(--blog-wash)}
+.admin-table button{background:var(--red);color:#fff;border:none;border-radius:4px;padding:4px 10px;font-size:12px;cursor:pointer}
+
+/* Responsive */
+@media(max-width:768px){
+  .wrap{width:min(1240px,100% - 32px)}
+  .blog-grid{grid-template-columns:1fr}
+  .quick-contact{right:10px;bottom:70px}
+  .quick-contact button{padding:8px 12px;font-size:12px}
+}
+</style>
+</head>
+<body>
+
+<!-- Language Modal Overlay -->
+<div class="modal-overlay" id="qrModal" onclick="closeModal()">
+  <button class="modal-close" onclick="closeModal()">×</button>
+  <img src="" alt="" id="qrModalImg">
+</div>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="wrap">
+    <span>加拿大本地教育工作室 · 始于 2016</span>
+    <a href="mailto:bettersolution_edu@hotmail.com">bettersolution_edu@hotmail.com <span aria-hidden="true">↗</span></a>
+  </div>
+</div>
+
+<!-- Header -->
+<header>
+  <div class="wrap header-inner">
+    <a href="#home" class="brand" aria-label="Better Solution Education">
+      <span class="logo-crop"><img src="images/bse-logo.jpg" alt="BSE"/></span>
+      <span><b>Better Solution Education</b><small>加拿大BSE留学工作室</small></span>
+    </a>
+    <button class="menu-button" id="menuBtn" aria-expanded="false" aria-label="展开菜单" onclick="toggleMenu()">☰</button>
+    <nav id="mainNav" aria-label="主导航">
+      <a href="#home">首页</a>
+      <a href="#pathways">教育方向</a>
+      <a href="#services">服务与流程</a>
+      <a href="#journal">教育博客</a>
+      <a href="#about">关于我们</a>
+    </nav>
+    <div class="header-actions">
+      <div class="lang-switcher">
+        <button class="language" id="langBtn" aria-label="Switch language" onclick="toggleLang()">EN <span>⌄</span></button>
+        <div class="lang-dropdown" id="langDropdown">
+          <a href="#" class="active" onclick="setLang('zh');return false">中文</a>
+          <a href="#" onclick="setLang('en');return false">English</a>
+        </div>
+      </div>
+      <a href="#consultation" class="button small">预约咨询 <span aria-hidden="true">↗</span></a>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- Hero -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="red-dot"></span> BETTER SOLUTION EDUCATION</div>
+      <h1>在加拿大，<br/>找到属于你的<br/><em>成长方向。</em></h1>
+      <p>每一个孩子，都有自己的节奏。每一个家庭，都值得被认真倾听。我们立足加拿大，陪伴你从留学规划，走向真实的学习与生活。</p>
+      <div class="hero-buttons">
+        <a href="#consultation" class="button">聊聊你的留学计划 <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="hero-foot">
+        <span class="compass">✦</span>
+        <span>立足加拿大 · 专注安省 · 连接未来</span>
+      </div>
+    </div>
+    <div class="campus-gallery" role="region" aria-roledescription="carousel" aria-label="加拿大校园画廊">
+      <div class="gallery-top">
+        <span>CANADIAN CAMPUS COLLECTION</span>
+        <span id="galleryCounter">01 / 04</span>
+      </div>
+      <button class="gallery-frame" id="galleryFrame" aria-label="多伦多大学 · University College，点击切换下一所大学" onclick="nextCampus()">
+        <div class="gallery-art-note">A little guidance.<br/>A world of possibility.</div>
+        <div class="gallery-drawing" id="gallerySvg">
+          <svg viewBox="0 0 680 470" fill="none" role="img" aria-labelledby="campus-title campus-description">
+            <title id="campus-title">University College · University of Toronto</title>
+            <desc id="campus-description">An original line illustration inspired by University College on the St. George campus, with the UofT letter installation in the foreground.</desc>
+            <image href="images/toronto.png" x="490" y="72" width="160" height="85" preserveAspectRatio="xMidYMid meet" aria-label="University of Toronto logo"></image>
+            <g stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M30 382H650M48 389H628M77 376V292H155M77 292L119 260L156 292M89 282V259H145V282M89 259L116 240L145 259M97 257V246M108 249V239M122 248V239M134 253V245"></path>
+              <path d="M151 376V275H276M147 276H280M154 272L190 230H274L278 276M173 250V230H181V239M190 230V220H200V230M180 242L192 231L204 242V253H180ZM215 242L227 231L239 242V253H215ZM249 242L261 231L273 242V253H249Z"></path>
+              <path d="M277 377V146H356V377M273 146H360V132H354V126H345V132H335V126H326V132H316V126H307V132H297V126H288V132H279V126H273ZM277 160H356M280 168H353M277 218H356M277 227H356M277 282H356M277 291H356M283 146V376M351 146V376"></path>
+              <path d="M346 130V112H367V130M343 112L356 76L370 112ZM356 77V65M353 112V129M363 112V129"></path>
+              <path d="M293 209V186a6 6 0 0 1 12 0V209Z"></path>
+              <path d="M310 209V186a6 6 0 0 1 12 0V209Z"></path>
+              <path d="M327 209V186a6 6 0 0 1 12 0V209Z"></path>
+              <path d="M290 255V240a3 3 0 0 1 6 0V255Z"></path>
+              <path d="M301 255V240a3 3 0 0 1 6 0V255Z"></path>
+              <path d="M312 255V240a3 3 0 0 1 6 0V255Z"></path>
+              <path d="M323 255V240a3 3 0 0 1 6 0V255Z"></path>
+              <path d="M334 255V240a3 3 0 0 1 6 0V255Z"></path>
+              <path d="M289 332V311Q317 270 345 311V332M293 331V313Q317 278 341 313V331M299 331V315Q317 290 335 315V331M283 375V346L317 320L351 346V375M281 345L317 315L353 345M300 375V357Q317 335 334 357V375M307 375V359Q317 346 327 359V375M317 352V376M294 378H340M290 383H345"></path>
+              <path d="M356 376V278H527M357 274L383 252H492L523 276M357 289H521M359 330H528M156 330H276M156 339H277M359 339H527M161 371H275M360 371H526"></path>
+              <path d="M167 316V295a7 7 0 0 1 14 0V316Z"></path>
+              <path d="M167 370V352a7 7 0 0 1 14 0V370Z"></path>
+              <path d="M164 318H184M174 295V316"></path>
+              <path d="M193 316V295a7 7 0 0 1 14 0V316Z"></path>
+              <path d="M193 370V352a7 7 0 0 1 14 0V370Z"></path>
+              <path d="M190 318H210M200 295V316"></path>
+              <path d="M219 316V295a7 7 0 0 1 14 0V316Z"></path>
+              <path d="M219 370V352a7 7 0 0 1 14 0V370Z"></path>
+              <path d="M216 318H236M226 295V316"></path>
+              <path d="M245 316V295a7 7 0 0 1 14 0V316Z"></path>
+              <path d="M245 370V352a7 7 0 0 1 14 0V370Z"></path>
+              <path d="M242 318H262M252 295V316"></path>
+              <path d="M369 322V302.5a6.5 6.5 0 0 1 13 0V322Z"></path>
+              <path d="M369 370V351.5a6.5 6.5 0 0 1 13 0V370Z"></path>
+              <path d="M394 322V302.5a6.5 6.5 0 0 1 13 0V322Z"></path>
+              <path d="M394 370V351.5a6.5 6.5 0 0 1 13 0V370Z"></path>
+              <path d="M419 322V302.5a6.5 6.5 0 0 1 13 0V322Z"></path>
+              <path d="M419 370V351.5a6.5 6.5 0 0 1 13 0V370Z"></path>
+              <path d="M444 322V302.5a6.5 6.5 0 0 1 13 0V322Z"></path>
+              <path d="M444 370V351.5a6.5 6.5 0 0 1 13 0V370Z"></path>
+              <path d="M469 322V302.5a6.5 6.5 0 0 1 13 0V322Z"></path>
+              <path d="M469 370V351.5a6.5 6.5 0 0 1 13 0V370Z"></path>
+              <path d="M494 322V302.5a6.5 6.5 0 0 1 13 0V322Z"></path>
+              <path d="M494 370V351.5a6.5 6.5 0 0 1 13 0V370Z"></path>
+              <path d="M168 376V360Q184 328 200 360V376M163 376V356Q184 319 205 356V376M220 375V359Q235 336 250 359V375M215 376V355Q235 327 255 355V376"></path>
+              <path d="M518 375V257H552V375M516 257L535 215L556 257ZM535 215V201M522 262H550M523 276H547M526 289V306M536 289V306M545 289V306M527 327V343M539 327V343M553 375V304H585M551 304L571 278L594 304M564 321V341M576 321V341"></path>
+              <path d="M194 230V212H211V230M190 213H215M195 211V203H201V209H207V203H212V211M466 253V235H487V253M461 235L478 196L492 235M478 196V184M490 252V222H503V252M490 222L496 208L503 222"></path>
+              <path d="M93 322V305a5 5 0 0 1 10 0V322Z"></path>
+              <path d="M111 322V305a5 5 0 0 1 10 0V322Z"></path>
+              <path d="M130 322V305a5 5 0 0 1 10 0V322Z"></path>
+              <path d="M80 355Q57 327 47 338Q27 323 22 345Q5 347 21 370M46 342V381M35 355L46 368L58 353M604 376V311M604 360L584 345M604 346L622 330M580 344Q561 318 577 308Q567 289 587 282Q580 262 600 258Q613 243 625 263Q648 261 643 286Q660 300 643 316Q647 341 624 344M598 382H634"></path>
+              <path d="M76 172Q88 159 103 170Q116 148 133 165Q151 157 161 174M408 131Q417 119 430 128Q442 109 457 125H474M574 199L580 193L587 198M596 188L602 182L608 188" opacity=".65"></path>
+            </g>
+            <g fill="currentColor" opacity=".055">
+              <path d="M151 376V275H277V376ZM356 376V278H527V376ZM277 377V146H356V377ZM77 376V292H151V376Z"></path>
+            </g>
+            <path d="M108 408L411 398L469 423L148 438Z" fill="#082c52" opacity=".1"></path>
+            <path d="M117 413H448V426H117Z" fill="#163d5b" stroke="#163d5b" stroke-width="1.2"></path>
+            <g stroke="#617d90" stroke-width="1.1" stroke-linejoin="round">
+              <path d="M142 334H161V380Q161 400 181 400Q201 400 201 380V334H220V382Q220 417 181 417Q142 417 142 382Z" fill="#dce3e5" transform="translate(4 -3)"></path>
+              <path d="M142 334H161V380Q161 400 181 400Q201 400 201 380V334H220V382Q220 417 181 417Q142 417 142 382Z" fill="#faf9f6"></path>
+              <path d="M233 385C233 344 291 344 291 385C291 426 233 426 233 385ZM249 385C249 408 275 408 275 385C275 362 249 362 249 385Z" fill="#faf9f6" fill-rule="evenodd"></path>
+              <path d="M310 414V369H300V354H310V346Q310 326 333 326H345V342H335Q326 342 326 350V354H344V369H326V414Z" fill="#faf9f6"></path>
+              <path d="M354 334H424V352H399V414H380V352H354Z" fill="#dce3e5" transform="translate(4 -3)"></path>
+              <path d="M354 334H424V352H399V414H380V352H354Z" fill="#faf9f6"></path>
+            </g>
+            <path d="M42 446Q220 433 352 443T641 442" stroke="currentColor" opacity=".22"></path>
+          </svg>
+        </div>
+        <span class="gallery-hint">点击画面，探索下一所大学 <span>→</span></span>
+      </button>
+      <div class="gallery-caption" aria-live="polite">
+        <span class="gallery-city" id="galleryCity">TORONTO, ONTARIO</span>
+        <h3 id="galleryTitle">多伦多大学</h3>
+        <p id="galleryDesc">University College · St. George</p>
+      </div>
+      <div class="gallery-controls">
+        <button type="button" aria-label="上一所大学" onclick="prevCampus()">←</button>
+        <div class="gallery-dots" id="galleryDots">
+          <button type="button" aria-label="多伦多大学 · University College" aria-current="true" onclick="goCampus(0)"><span></span></button>
+          <button type="button" aria-label="麦吉尔大学 · Arts Building" onclick="goCampus(1)"><span></span></button>
+          <button type="button" aria-label="英属哥伦比亚大学 · Robson Square" onclick="goCampus(2)"><span></span></button>
+          <button type="button" aria-label="滑铁卢大学 · 校园标志" onclick="goCampus(3)"><span></span></button>
+        </div>
+        <button type="button" aria-label="下一所大学" onclick="nextCampus()">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Intro Strip -->
+<div class="intro-strip">
+  <div class="wrap">
+    <p>不是千篇一律的方案，是与你一起找到更合适的选择。</p>
+    <div>
+      <span>中英双语沟通</span><i></i>
+      <span>个性化升学规划</span><i></i>
+      <span>来加前后持续关注</span>
+    </div>
+  </div>
+</div>
+
+<!-- Pathways -->
+<section id="pathways" class="section wrap">
+  <div class="section-heading">
+    <div>
+      <div class="eyebrow">01 / YOUR NEXT CHAPTER</div>
+      <h2>不同的阶段，同样的用心。</h2>
+    </div>
+    <p>从中小学到高等教育，从第一次出发到人生的新选择，我们先了解你，再一起规划。</p>
+  </div>
+  <div class="program-grid">
+    <button class="program p0" onclick="scrollToSection('services')">
+      <div class="program-top"><span>01</span><span class="program-symbol">⌂</span></div>
+      <h3>K–12 中小学</h3>
+      <p>为成长，找到适合的起点。</p>
+      <div class="program-bottom"><span>选校规划 / 入学申请 / 学业适应</span><span class="circle-arrow">↗</span></div>
+    </button>
+    <button class="program p1" onclick="scrollToSection('services')">
+      <div class="program-top"><span>02</span><span class="program-symbol">◇</span></div>
+      <h3>本科与研究生</h3>
+      <p>让兴趣，走向更清晰的未来。</p>
+      <div class="program-bottom"><span>专业探索 / 本科申请 / 研究生规划</span><span class="circle-arrow">↗</span></div>
+    </button>
+    <button class="program p2" onclick="scrollToSection('services')">
+      <div class="program-top"><span>03</span><span class="program-symbol">✳</span></div>
+      <h3>成人教育与移民</h3>
+      <p>人生的下一程，也值得认真规划。</p>
+      <div class="program-bottom"><span>继续教育 / 职业规划 / 签证移居</span><span class="circle-arrow">↗</span></div>
+    </button>
+  </div>
+</section>
+
+<!-- Services -->
+<section id="services" class="services-section">
+  <div class="wrap services-grid">
+    <div class="services-intro">
+      <div class="eyebrow">02 / BY YOUR SIDE</div>
+      <h2>不止于申请。<br/><span>陪你走好每一步。</span></h2>
+      <p>一个适合你的计划，需要看见来加拿大之前的期待，也需要关心到达之后的每一天。</p>
+      <a href="#process" class="text-link">了解我们的服务与工作流程 <span>↓</span></a>
+      <div class="handwritten">Your journey, thoughtfully planned.</div>
+    </div>
+    <div class="service-list">
+      <details><summary><span>01</span><h3>升学规划</h3><b>+</b></summary><p>从兴趣、能力与家庭目标出发，梳理阶段性的教育方向。</p></details>
+      <details><summary><span>02</span><h3>院校申请</h3><b>+</b></summary><p>整理选校思路、申请时间线与材料准备，让每一步更有条理。</p></details>
+      <details><summary><span>03</span><h3>学业督导</h3><b>+</b></summary><p>关注在加中学生的学习节奏与适应，保持家庭与学生的沟通。</p></details>
+      <details><summary><span>04</span><h3>本地服务</h3><b>+</b></summary><p>围绕到校、生活适应与本地资源，提前了解并准备落地事项。</p></details>
+      <details><summary><span>05</span><h3>签证移民</h3><b>+</b></summary><p>围绕学签、旅游签、工签及移居需求，由团队持牌移民顾问提供专业支持，先明确情况，再确认服务范围。</p></details>
+    </div>
+  </div>
+</section>
+
+<!-- Process -->
+<section id="process" class="section wrap process">
+  <div class="section-heading">
+    <div>
+      <div class="eyebrow">03 / A CLEAR WAY FORWARD</div>
+      <h2>把未知，变成清晰的下一步。</h2>
+    </div>
+  </div>
+  <div class="steps">
+    <div><span class="step-no">01</span><h3>倾听与了解</h3><p>先聊背景、目标与顾虑。</p></div>
+    <div><span class="step-no">02</span><h3>共同规划</h3><p>讨论教育方向与可行安排。</p></div>
+    <div><span class="step-no">03</span><h3>有序推进</h3><p>确认服务范围、时间线和分工。</p></div>
+    <div><span class="step-no">04</span><h3>持续沟通</h3><p>跟进进展，关注学习与适应。</p></div>
+  </div>
+</section>
+
+<!-- About -->
+<section id="about" class="about-section">
+  <div class="wrap about-grid">
+    <div class="world-connections">
+      <div class="map-kicker">CHINA ↔ NORTH AMERICA</div>
+      <svg viewBox="0 0 620 400" role="img" aria-labelledby="connections-title">
+        <title id="connections-title">连接北京、多伦多与温哥华的概念地图</title>
+        <defs>
+          <pattern id="map-dots" width="12" height="12" patternUnits="userSpaceOnUse"><circle cx="4" cy="4" r="1.7" fill="#b4c2c5"></circle></pattern>
+          <marker id="flight-arrow" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7" fill="none" stroke="#ad5c5e" stroke-width="1.1"></path></marker>
+        </defs>
+        <g fill="url(#map-dots)">
+          <path d="M40 127L73 105L104 87L137 90L156 117L188 113L215 136L208 163L232 186L208 211L190 205L166 237L143 242L122 217L99 222L89 199L65 186L60 159L35 149Z"></path>
+          <path d="M164 245L189 242L209 265L217 293L201 324L185 345L172 318L176 289L158 268Z"></path>
+          <path d="M259 123L285 107L309 114L322 139L308 158L318 180L301 200L273 188L261 164L245 147ZM287 199L320 195L337 220L329 259L312 285L298 268L279 236Z"></path>
+          <path d="M321 116L351 91L385 100L409 89L440 107L469 96L497 122L528 131L555 158L537 179L511 174L490 197L463 195L451 218L427 214L408 186L382 189L367 166L341 168L324 144Z"></path>
+          <path d="M494 266L527 255L553 274L562 296L538 307L507 299L486 281Z"></path>
+        </g>
+        <g fill="none" stroke="#d0d9d8" stroke-width="1">
+          <ellipse cx="307" cy="204" rx="277" ry="139"></ellipse>
+          <path d="M40 204H580M307 65C190 151 190 253 307 343M307 65C424 151 424 253 307 343" stroke-dasharray="4 8"></path>
+        </g>
+        <path d="M462 161C355 7 167 12 116 167" fill="none" stroke="#ad5c5e" stroke-width="1.6" stroke-dasharray="5 6" marker-end="url(#flight-arrow)"></path>
+        <path d="M462 161C363 41 258 51 181 181" fill="none" stroke="#637f91" stroke-width="1.3" marker-end="url(#flight-arrow)"></path>
+        <g transform="translate(310 57) rotate(-10)">
+          <path d="M-17 0L-5-4L0-15L5-16L3-4L17 0L18 4L2 2L-2 12L-6 12L-6 2L-17 4Z" fill="#a45459"></path>
+        </g>
+        <g><circle cx="116" cy="167" r="14" fill="#b94a51" opacity=".12"></circle><circle cx="116" cy="167" r="4" fill="#b94a51"></circle><text x="116" y="204" text-anchor="middle" fill="#183b58" font-size="13" font-family="Arial, Microsoft YaHei, sans-serif">温哥华</text><text x="116" y="219" text-anchor="middle" fill="#778d99" font-size="7" letter-spacing="1.4">VANCOUVER</text></g>
+        <g><circle cx="181" cy="181" r="14" fill="#b94a51" opacity=".12"></circle><circle cx="181" cy="181" r="4" fill="#b94a51"></circle><text x="195" y="209" text-anchor="middle" fill="#183b58" font-size="13" font-family="Arial, Microsoft YaHei, sans-serif">多伦多</text><text x="195" y="224" text-anchor="middle" fill="#778d99" font-size="7" letter-spacing="1.4">TORONTO</text></g>
+        <g><circle cx="462" cy="161" r="14" fill="#b94a51" opacity=".12"></circle><circle cx="462" cy="161" r="4" fill="#b94a51"></circle><text x="462" y="198" text-anchor="middle" fill="#183b58" font-size="13" font-family="Arial, Microsoft YaHei, sans-serif">北京</text><text x="462" y="213" text-anchor="middle" fill="#778d99" font-size="7" letter-spacing="1.4">BEIJING</text></g>
+      </svg>
+      <div class="map-footer"><span>ROOTED LOCALLY. CONNECTED GLOBALLY.</span><p>跨越文化，陪伴每一程。</p></div>
+    </div>
+    <div class="about-copy">
+      <div class="eyebrow">04 / A STUDIO, WITH PURPOSE</div>
+      <h2>以教育者的视角，<br/>陪伴每一步成长。</h2>
+      <p>BSE 于2016年创立于加拿大大多伦多地区，面向中国学生与家庭，专注加拿大中小学、高等教育及入学后的学习与生活支持。</p>
+      <p>资深团队具有中国与北美的教育经验，融合高校教学、课程建设与跨文化学习的视角。我们重视学生的学习基础、兴趣与长期发展，让规划从了解学生本身开始。</p>
+      <p>结合加拿大本地教育资源、英语学习支持及持牌移民顾问的专业协作，我们将前期规划、院校申请、学业督导与落地支持衔接起来，持续关注学生和陪读家庭的真实需要。</p>
+      <div class="about-values"><span>教育经验</span><span>本地协作</span><span>全程关注</span></div>
+      <div class="city-connections">北京 · 多伦多 · 温哥华</div>
+      <button class="text-link" onclick="alert('团队介绍页面即将上线')">认识我们的团队 <span aria-hidden="true">↗</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- Journal / Blog -->
+<section id="journal" class="section wrap journal">
+  <div class="section-heading">
+    <div>
+      <div class="eyebrow">05 / THE BSE JOURNAL</div>
+      <h2>分享信息，也分享思考。</h2>
+    </div>
+    <p>用一篇篇实用的分享，帮助你把关于加拿大教育的问题，问得更清楚。</p>
+  </div>
+
+  <div class="filter-tabs" role="group" aria-label="文章分类">
+    <button class="active" onclick="filterArticles('all',this)">全部</button>
+    <button onclick="filterArticles('k12',this)">中小学</button>
+    <button onclick="filterArticles('higher',this)">高等教育</button>
+    <button onclick="filterArticles('adult',this)">成人教育</button>
+    <button onclick="filterArticles('local',this)">本地生活</button>
+    <button onclick="filterArticles('edu-news',this)">教育消息</button>
+    <button onclick="filterArticles('imm-news',this)">移民消息</button>
+  </div>
+
+  <div class="blog-grid" id="articleGrid">
+    <button class="article-card" data-category="k12" onclick="openArticle('deca-1')">
+      <div class="meta"><span>K-12</span><span>2026.10.20 · 工作室分享</span></div>
+      <h3>精华篇：一篇看懂DECA商赛备赛（上篇）</h3>
+      <p>报名资格、学校 Chapter、赛制、晋级路线与赛项选择。</p>
+      <span class="read-link">阅读文章</span>
+    </button>
+    <button class="article-card" data-category="k12" onclick="openArticle('deca-2')">
+      <div class="meta"><span>K-12</span><span>2026.10.20 · 工作室分享</span></div>
+      <h3>精华篇：一篇看懂DECA商赛备赛（下篇）</h3>
+      <p>备赛方法、训练工具、成长价值与家长指南。</p>
+      <span class="read-link">阅读文章</span>
+    </button>
+    <button class="article-card" data-category="k12" onclick="openArticle('k12-planning')">
+      <div class="meta"><span>K-12</span><span>2026.10.17 · 工作室分享</span></div>
+      <h3>为孩子规划加拿大中小学：先问这五个问题</h3>
+      <p>从学习习惯、语言适应到家庭安排，让选校从了解孩子开始。</p>
+      <span class="read-link">阅读文章</span>
+    </button>
+    <button class="article-card" data-category="higher" onclick="openArticle('choose-uni')">
+      <div class="meta"><span>Higher education</span><span>2026.10.17 · 工作室分享</span></div>
+      <h3>选大学之前，先想清楚你想怎样学习</h3>
+      <p>不只看学校名字。把课程、学习方式和个人兴趣放在同一张清单里。</p>
+      <span class="read-link">阅读文章</span>
+    </button>
+    <button class="article-card" data-category="local" onclick="openArticle('landing')">
+      <div class="meta"><span>Local support</span><span>2026.10.17 · 工作室分享</span></div>
+      <h3>抵达加拿大之前，准备一份自己的落地清单</h3>
+      <p>住宿、报到、通勤与日常联系：把不确定的事情，变成可以逐项准备的小事。</p>
+      <span class="read-link">阅读文章</span>
+    </button>
+  </div>
+
+  <div class="journal-note">政策与入学要求请以相关政府及院校公布的最新信息为准。</div>
+</section>
+
+<!-- Article Detail (hidden by default) -->
+<section id="article-detail" class="section wrap" style="display:none">
+  <button class="text-link" onclick="closeArticle()" style="margin-bottom:20px">← 返回文章列表</button>
+  <article id="articleContent">
+    <!-- Content injected by JS -->
+  </article>
+  <div class="comment-section">
+    <h3>评论与留言</h3>
+    <div class="comment-form">
+      <input type="text" id="cName" placeholder="您的昵称">
+      <textarea id="cText" placeholder="写下您的想法..."></textarea>
+      <button onclick="postComment()">发表评论</button>
+    </div>
+    <div class="like-btn" id="articleLike" onclick="toggleArticleLike()">🤍 <span id="likeCount">0</span> 喜欢</div>
+    <div class="comment-list" id="commentList"></div>
+  </div>
+</section>
+
+<!-- Consultation -->
+<section id="consultation" class="consult-section">
+  <div class="wrap consult-grid">
+    <div class="consult-copy">
+      <div class="eyebrow">06 / LET'S BEGIN WITH A CONVERSATION</div>
+      <h2>你的下一程，<br/><em>从一次交流开始。</em></h2>
+      <p>不必带着所有答案来。告诉我们你正在考虑什么，我们一起梳理下一步。</p>
+      <div class="contact-line">
+        <span>EMAIL</span>
+        <a href="mailto:bettersolution_edu@hotmail.com">bettersolution_edu@hotmail.com <span aria-hidden="true">↗</span></a>
+      </div>
+      <div class="contact-line">
+        <span>服务联络</span>
+        <p>北京 · 多伦多 · 温哥华</p>
+      </div>
+      <div class="contact-line">
+        <span>电话</span>
+        <a href="tel:+16479952071">加拿大 +1 647-995-2071</a><br/>
+        <a href="tel:+8618201659570">中国 +86 182-0165-9570</a>
+      </div>
+      <div class="contact-line">
+        <span>WECHAT</span>
+        <button onclick="openQR('images/bse-wechat-qr.jpg')">微信咨询 <span aria-hidden="true">↗</span></button>
+      </div>
+      <button type="button" class="inline-qr" onclick="openQR('images/bse-wechat-qr.jpg')" aria-label="放大微信二维码">
+        <img src="images/bse-wechat-qr.jpg" alt="企业微信二维码" loading="lazy"/>
+        <span>扫码联系企业微信 ↗</span>
+      </button>
+      <p class="contact-note">欢迎家长、学生与教育合作伙伴联系。</p>
+    </div>
+    <form class="consult-form" id="consultForm" onsubmit="submitForm(event)">
+      <div class="form-tabs">
+        <button type="button" class="active" id="tabStudy" onclick="switchTab('study')">留学评估</button>
+        <button type="button" id="tabVisa" onclick="switchTab('visa')">签证移民</button>
+      </div>
+      <div class="form-row">
+        <label>您的姓名 *<input autocomplete="name" required maxlength="120" placeholder="如何称呼您" name="name"/></label>
+        <label>邮箱 / 微信 / 电话 *<input required maxlength="250" placeholder="便于我们回复您的联系方式" name="contact"/></label>
+      </div>
+      <div class="form-row">
+        <label>咨询类别 *
+          <select name="category">
+            <option value="K-12" selected>K–12 中小学</option>
+            <option value="University">大学本科</option>
+            <option value="Graduate">研究生</option>
+          </select>
+        </label>
+        <label>申请 / 服务类别 *
+          <select name="service">
+            <option value="School application" selected>院校申请</option>
+            <option value="Course tutoring">课程辅导</option>
+            <option value="Academic supervision">学业督导</option>
+            <option value="Other">其它</option>
+          </select>
+        </label>
+      </div>
+      <label>想和我们聊些什么？ <span class="optional">（选填）</span>
+        <textarea name="note" rows="3" maxlength="3000" placeholder="例如：目前年级、感兴趣的方向、计划入学时间……"></textarea>
+      </label>
+      <div class="honeypot" aria-hidden="true"><label>Website<input tabindex="-1" autocomplete="off" name="website"/></label></div>
+      <label class="consent">
+        <input type="checkbox" required name="consent"/>
+        <span>我同意工作室为回复本次咨询而保存及使用以上信息。 <button type="button" onclick="alert('隐私说明：我们仅将您的信息用于回复本次咨询，不会分享给第三方。')">隐私说明</button></span>
+      </label>
+      <button class="button submit-button" type="submit">提交咨询 <span aria-hidden="true">↗</span></button>
+      <p class="form-feedback" id="formFeedback" role="status"></p>
+    </form>
+  </div>
+</section>
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="wrap footer-main">
+    <div>
+      <a class="footer-brand" href="#home">Better Solution Education<span>加拿大教育工作室</span></a>
+      <p>以更好的规划，连接更多可能。</p>
+    </div>
+    <div>
+      <span class="footer-label">EXPLORE</span>
+      <a href="#pathways">教育方向</a>
+      <a href="#services">服务与流程</a>
+      <a href="#journal">教育博客与最新消息</a>
+    </div>
+    <div>
+      <span class="footer-label">GET IN TOUCH</span>
+      <a href="#consultation">预约咨询</a>
+      <button type="button" onclick="alert('合作联系邮箱：bettersolution_edu@hotmail.com')">合作联系</button>
+      <button onclick="openQR('images/bse-wechat-qr.jpg')">微信咨询</button>
+      <a href="mailto:bettersolution_edu@hotmail.com">bettersolution_edu@hotmail.com</a>
+    </div>
+  </div>
+  <div class="wrap footer-bottom">
+    <span>© 2026 Better Solution Education.</span>
+    <div>
+      <button onclick="alert('隐私说明：我们仅将您的信息用于回复本次咨询，不会分享给第三方。')">隐私说明</button>
+      <button onclick="toggleAdmin()">内容管理</button>
+      <a href="#home">返回顶部 ↑</a>
+    </div>
+  </div>
+</footer>
+
+<!-- Quick Contact Floating -->
+<div class="quick-contact" aria-label="快捷咨询">
+  <button onclick="scrollToSection('consultation')">↗ <span>留学评估</span></button>
+  <button onclick="switchTab('visa');scrollToSection('consultation')">✉ <span>签证移民</span></button>
+  <button onclick="openQR('images/bse-wechat-qr.jpg')">☏ <span>微信咨询</span></button>
+</div>
+
+<!-- Admin Panel -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <h2>内容管理</h2>
+    <button onclick="toggleAdmin()">关闭</button>
+  </div>
+  <div class="admin-content">
+    <h3 style="font-family:var(--serif);margin-bottom:16px">咨询留言</h3>
+    <table class="admin-table" id="adminTable">
+      <thead><tr><th>时间</th><th>姓名</th><th>联系方式</th><th>类别</th><th>内容</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <h3 style="font-family:var(--serif);margin:24px 0 16px">博客评论</h3>
+    <table class="admin-table" id="adminCommentsTable">
+      <thead><tr><th>文章</th><th>昵称</th><th>评论</th><th>时间</th><th>操作</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+</div>
+
+<script src="js/app.js"></script>
+</body>
+</html>
